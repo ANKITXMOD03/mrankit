@@ -3,142 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANKIT Premium App Store</title>
+    <title>ANKIT MODS - Premium Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Modern & Premium Design */
+        :root {
+            --bg-color: #000000;
+            --card-bg: #1c1c1e;
+            --text-main: #ffffff;
+            --text-sec: #8e8e93;
+            --accent: #007aff;
+            --glass: rgba(255, 255, 255, 0.08);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f7;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
             margin: 0;
             padding: 20px;
-            color: #1d1d1f;
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
         }
 
         header {
-            max-width: 1000px;
-            margin: 0 auto 30px;
-            text-align: left;
+            max-width: 800px;
+            margin: 40px auto 30px;
+            padding: 0 10px;
         }
 
         header h1 {
             font-size: 34px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin: 0;
+            background: linear-gradient(to right, #fff, #8e8e93);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
-        }
-
-        /* App Card Style */
-        .app-card {
-            background: #ffffff;
-            border-radius: 22px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 15px;
         }
 
-        .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        /* Premium Card Design */
+        .app-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
         }
 
         .app-icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 22%;
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
             object-fit: cover;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .app-info {
+            flex-grow: 1;
         }
 
         .app-name {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            margin: 10px 0 5px;
+            margin-bottom: 2px;
+            display: block;
         }
 
         .app-category {
-            font-size: 14px;
-            color: #86868b;
-            margin-bottom: 15px;
+            font-size: 12px;
+            color: var(--text-sec);
+            display: block;
         }
 
-        /* Download Button */
+        .app-pw {
+            font-size: 10px;
+            color: #ff453a;
+            margin-top: 4px;
+            font-weight: bold;
+        }
+
+        /* Action Section */
+        .action-area {
+            min-width: 90px;
+            text-align: right;
+        }
+
         .download-btn {
-            background-color: #0071e3;
-            color: white;
-            padding: 8px 20px;
+            background-color: var(--glass);
+            color: var(--accent);
+            padding: 6px 20px;
             border-radius: 20px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.2s;
-            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        .download-btn:hover {
-            background-color: #0077ed;
+        .download-btn.loading {
+            background: #3a3a3c;
+            color: #fff;
+            font-size: 11px;
         }
 
-        /* Responsive Settings */
-        @media (max-width: 600px) {
-            .container {
-                grid-template-columns: 1fr 1fr;
-                gap: 15px;
-            }
-            header h1 { font-size: 28px; }
+        /* Progress Bar (Fake Installation) */
+        .progress-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            transition: width 0.1s linear;
+        }
+
+        @media (max-width: 480px) {
+            .app-icon { width: 60px; height: 60px; }
+            .app-name { font-size: 15px; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Discover Apps</h1>
-        <p>Premium selection for your device</p>
+        <h1>Apps Store</h1>
+        <p style="color: var(--text-sec); margin: 5px 0;">Premium Modified Content</p>
     </header>
 
     <div class="container">
 
-        <div class="app-card">
-            <img src="https://jumpshare.com/share/vznNDFUFXopO423xVfuT" alt="App 1" class="app-icon">
-            <div class="app-name">RAINBOW SRC</div>
-            <div class="app-category">Modification</div>
-            <a href="https://sub2unlock.me/H5sPeiw" class="download-btn">GET</a>
+        <div class="app-card" id="app1">
+            <img src="https://i.ibb.co/VWV0K3f/icon1.png" alt="Icon" class="app-icon">
+            <div class="app-info">
+                <span class="app-name">RAINBOW SRC</span>
+                <span class="app-category">Modification • v1.0</span>
+            </div>
+            <div class="action-area">
+                <button onclick="startProcess(this, 'https://sub2unlock.me/H5sPeiw', 'app1')" class="download-btn">GET</button>
+            </div>
+            <div class="progress-container"><div class="progress-bar"></div></div>
         </div>
 
-        <div class="app-card">
-            <img src="https://jumpshare.com/share/iupQlHg6MLpPUuggql3y" alt="App 2" class="app-icon">
-            <div class="app-name">PREMIUM SRC</div>
-            <div class="app-category">Modification</div>
-            <a href="https://earnlinks.in/Jn6LT" class="download-btn">GET</a>
+        <div class="app-card" id="app2">
+            <img src="https://i.ibb.co/VWV0K3f/icon1.png" alt="Icon" class="app-icon">
+            <div class="app-info">
+                <span class="app-name">PREMIUM SRC</span>
+                <span class="app-category">Tool • High Quality</span>
+            </div>
+            <div class="action-area">
+                <button onclick="startProcess(this, 'https://earnlinks.in/Jn6LT', 'app2')" class="download-btn">GET</button>
+            </div>
+            <div class="progress-container"><div class="progress-bar"></div></div>
         </div>
 
-        <div class="app-card">
-            <img src="https://jumpshare.com/share/yMiXNafBmNYmCpgEDADT" alt="App 3" class="app-icon">
-            <div class="app-name">PREMIUM UI SRC</div>
-            PASSWORD-ÆnKĪtXmŌdZ
-            <div class="app-category">Modification</div>
-            <a href="https://earnlinks.in/3apr.com/app3.apk" class="download-btn">GET</a>
+        <div class="app-card" id="app3">
+            <img src="https://i.ibb.co/VWV0K3f/icon1.png" alt="Icon" class="app-icon">
+            <div class="app-info">
+                <span class="app-name">PREMIUM UI SRC</span>
+                <div class="app-pw">PASSWORD: ÆnKĪtXmŌdZ</div>
+            </div>
+            <div class="action-area">
+                <button onclick="startProcess(this, 'https://earnlinks.in/3apr.com/app3.apk', 'app3')" class="download-btn">GET</button>
+            </div>
+            <div class="progress-container"><div class="progress-bar"></div></div>
         </div>
 
-        <div class="app-card">
-            <img src="https://jumpshare.com/share/LwWdXSn3EdsphCOxqOJI" alt="App 4" class="app-icon">
-            <div class="app-name">SRC ALL FUNCTIONS</div>
-            <div class="app-category">Modification</div>
-            <a href="https://earnlinks.in/CTDSg" class="download-btn">GET</a>
+        <div class="app-card" id="app4">
+            <img src="https://i.ibb.co/VWV0K3f/icon1.png" alt="Icon" class="app-icon">
+            <div class="app-info">
+                <span class="app-name">SRC ALL FUNCTIONS</span>
+                <span class="app-category">AIO Mod • Premium</span>
+            </div>
+            <div class="action-area">
+                <button onclick="startProcess(this, 'https://earnlinks.in/CTDSg', 'app4')" class="download-btn">GET</button>
+            </div>
+            <div class="progress-container"><div class="progress-bar"></div></div>
         </div>
 
     </div>
 
+    <script>
+        function startProcess(btn, url, appId) {
+            let card = document.getElementById(appId);
+            let pContainer = card.querySelector('.progress-container');
+            let pBar = card.querySelector('.progress-bar');
+            let timeLeft = 5;
+
+            // Step 1: Timer on Button
+            btn.disabled = true;
+            btn.classList.add('loading');
+            
+            let timer = setInterval(function() {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    btn.innerText = "INSTALLING...";
+                    startLoading();
+                } else {
+                    btn.innerText = "WAIT " + timeLeft + "s";
+                }
+                timeLeft -= 1;
+            }, 1000);
+
+            // Step 2: Fake Installation Progress Bar
+            function startLoading() {
+                pContainer.style.display = "block";
+                let width = 0;
+                let loading = setInterval(function() {
+                    if (width >= 100) {
+                        clearInterval(loading);
+                        btn.innerText = "OPEN";
+                        // Step 3: Redirect
+                        setTimeout(() => {
+                            window.location.href = url;
+                        }, 500);
+                    } else {
+                        width += 2; // Speed of installation
+                        pBar.style.width = width + "%";
+                    }
+                }, 50); // Fast install animation
+            }
+        }
+    </script>
+
 </body>
-</html>
+                    </html>
+            
