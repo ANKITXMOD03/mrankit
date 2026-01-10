@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppStore Admin | Premium Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0f172a; color: white; font-family: 'Inter', sans-serif; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .gradient-btn { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight">AppStore <span class="text-indigo-500">Admin</span></h1>
+                <p class="text-slate-400">Upload and manage your premium applications</p>
+            </div>
+            <i class="fas fa-user-shield text-4xl text-indigo-500"></i>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-6 flex items-center">
+                <i class="fas fa-plus-circle mr-2 text-indigo-400"></i> Add New App
+            </h2>
+            
+            <form id="appForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-slate-400 mb-1">App Name</label>
+                        <input type="text" id="appName" placeholder="e.g. Photoshop Mobile" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:outline-none focus:border-indigo-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-400 mb-1">Category</label>
+                        <select id="appCategory" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:outline-none focus:border-indigo-500">
+                            <option>Tools</option>
+                            <option>Games</option>
+                            <option>Social</option>
+                            <option>Productivity</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm text-slate-400 mb-1">App Description</label>
+                    <textarea id="appDesc" rows="3" placeholder="Describe the features..." class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:outline-none focus:border-indigo-500" required></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-slate-400 mb-1">Icon URL (Image)</label>
+                        <input type="text" id="appIcon" placeholder="https://image-link.com/icon.png" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:outline-none focus:border-indigo-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-400 mb-1">Download Link (File)</label>
+                        <input type="text" id="appLink" placeholder="https://drive-link.com/file.apk" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 focus:outline-none focus:border-indigo-500" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="gradient-btn w-full py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-all shadow-lg shadow-indigo-500/20">
+                    Publish App to Store
+                </button>
+            </form>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6">
+            <h2 class="text-xl font-semibold mb-4">Recently Added</h2>
+            <div id="appList" class="space-y-4">
+                <p class="text-slate-500 text-center py-4">No apps uploaded yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const appForm = document.getElementById('appForm');
+        const appList = document.getElementById('appList');
+
+        // Load saved apps from LocalStorage
+        let apps = JSON.parse(localStorage.getItem('myApps')) || [];
+
+        function displayApps() {
+            if (apps.length === 0) {
+                appList.innerHTML = '<p class="text-slate-500 text-center py-4">No apps uploaded yet.</p>';
+                return;
+            }
+            
+            appList.innerHTML = apps.map((app, index) => `
+                <div class="flex items-center justify-between bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                    <div class="flex items-center space-x-4">
+                        <img src="${app.icon}" class="w-12 h-12 rounded-xl object-cover" onerror="this.src='https://via.placeholder.com/50'">
+                        <div>
+                            <h3 class="font-bold">${app.name}</h3>
+                            <p class="text-xs text-slate-400">${app.category}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteApp(${index})" class="text-red-400 hover:text-red-300 p-2">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        appForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const newApp = {
+                name: document.getElementById('appName').value,
+                category: document.getElementById('appCategory').value,
+                desc: document.getElementById('appDesc').value,
+                icon: document.getElementById('appIcon').value,
+                link: document.getElementById('appLink').value
+            };
+
+            apps.push(newApp);
+            localStorage.setItem('myApps', JSON.stringify(apps));
+            
+            appForm.reset();
+            displayApps();
+            alert('App Uploaded Successfully (Saved in Browser)!');
+        });
+
+        function deleteApp(index) {
+            if(confirm('Delete this app?')) {
+                apps.splice(index, 1);
+                localStorage.setItem('myApps', JSON.stringify(apps));
+                displayApps();
+            }
+        }
+
+        // Initial Load
+        displayApps();
+    </script>
+</body>
+</html>
